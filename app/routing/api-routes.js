@@ -1,5 +1,11 @@
 // ===============================================================================
 // LOAD DATA
+// We are linking our routes to a series of "data" sources.
+// These data sources hold arrays of information on table-data, waitinglist, etc.
+// ===============================================================================
+
+// ===============================================================================
+// ROUTING
 // ===============================================================================
 
 var trailsData = require('../data/trails.js');
@@ -13,47 +19,59 @@ var tnt = new TransitAndTrails({
 module.exports = function (app) {
 	
 
-	tnt.getTrailhead(292, function(err, trailhead) {
-  if (err) {
-    throw err;
-  }
+	// API NPM GET Requests
+	
+	// app.get('/api/trailsnpm', function(req,res){
+		
+	// 	 console.log("Request made" + req.params);
+	// 	 // console.log("RESponse----" + res.params);
 
-  console.log(trailhead);
-});
-};
+		
+		
+	// 	tnt.getTrailhead(999, function(err, trailhead) {
+	// 			if (err) {
+	// 			throw err;
+	// 			}
+				
+	// 			// console.log(trailhead)
+					
+	// 	res.jsonp(trailhead);
+	
+	// 	});
+	// });	
 
 
 	// API GET Requests
 
-				// 	// app.get('/api/trailsapi/:long/:lat/', function(req,res){
-				// 	app.get('/api/trailsapi/', function(req,res){	
-				// 		var trailsURL = 'https://api.transitandtrails.org/api/v1/trailheads';
-				// 		var key = '?key=2e5b17ab10f75e98ad4802a9301e8e7c253d3a4c50736c63e1d91170c7106550';
+	// app.get('/api/trailsapi/:long/:lat/', function(req,res){
+	app.get('/api/trailsapi/', function(req,res){	
+		var trailsURL = 'https://api.transitandtrails.org/api/v1/trailheads';
+		var key = '?key=2e5b17ab10f75e98ad4802a9301e8e7c253d3a4c50736c63e1d91170c7106550';
 
 
-				// 		var limit = '&limit=5';
+		var limit = '&limit=5';
 
-				// 		// var lat = req.params.lat;
-				// 		// var long = req.params.long;
-					
-				// 		var longitude = "&longitude=-118.243683";
-				// 		var latitude = "&latitude=34.052235";
-				// 		var distance = "&distance=15";
+		// var lat = req.params.lat;
+		// var long = req.params.long;
+	
+		var longitude = "&longitude=-118.243683";
+		var latitude = "&latitude=34.052235";
+		var distance = "&distance=15";
 
-				// 		//make request to trails api with lat long distance
-				// 		request(trailsURL + key + longitude + latitude + limit + distance, function (error, response, body) {
-				// 		  if (!error && response.statusCode == 200) {
-				// 		    console.log(body) 
+		//make request to trails api with lat long distance
+		request(trailsURL + key + longitude + latitude + limit + distance, function (error, response, body) {
+		  if (!error && response.statusCode == 200) {
+		    console.log(body) 
 
-				// // 		//once request is complete ".then()" send it to the front end
-				// 		    res.json(body)
-				// 		  }
-				// 		})
-				// 	});	
-				// // 		
-						
-				// };	
-					
+// 		//once request is complete ".then()" send it to the front end
+		    res.json(body)
+		  }
+		})
+	});	
+// 		
+		
+};	
+	
 
 	
 	// API POST Requests

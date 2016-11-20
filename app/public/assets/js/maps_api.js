@@ -6,8 +6,8 @@ $(document).ready(function() {
 
 // var mapboxAPI = 'https://api.mapbox.com/directions/v5/mapbox.places/Chester.json?country=us&access_token=pk.eyJ1IjoiZGFtaWVud3JpZ2h0IiwiYSI6ImNpdTdvYjlhazAwMGUzM28wdGd5MnYwbDcifQ.Q0yTEMl-dyTpCvVoi87jNA';
 
-	$('#submit').on('click', function() {
-		var zipcode = $('#pac-input').val().trim();
+	$('#apiBtn').on('click', function() {
+		var zipcode = $('#zipInput').val().trim();
 		var queryURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&sensor=false`
 		console.log('Location entered:', zipcode);
 
@@ -40,8 +40,32 @@ $(document).ready(function() {
   // });
 
   function getTrails(long, lat) {
-    var currentURL = window.location.origin;
-    $.get(`${currentURL}/api/trailsapi/${long}/${lat}`)
+    // var currentURL = window.location.origin;
+    // $.get(`${currentURL}/api/trailsapi/${long}/${lat}`,function(req,res){
+        console.log('getTrail');
+
+          var trailsURL = 'https://api.transitandtrails.org/api/v1/trailheads';
+          var key = '?key=2e5b17ab10f75e98ad4802a9301e8e7c253d3a4c50736c63e1d91170c7106550';
+          var request = require('request');
+
+          var limit = '&limit=5';
+
+           // var lat = req.params.lat;
+           // var long = req.params.long;
+          
+           var longitude = "&longitude=" + long;
+           var latitude = "&latitude=" + lat;
+           var distance = "&distance=15";
+
+           //make request to trails api with lat long distance
+           request(trailsURL + key + longitude + latitude + limit + distance, function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+               console.log(body) 
+
+        //     //once request is complete ".then()" send it to the front end
+               res.json(body)
+              }   
+          });    
   }
 
 	// Display and Update Google Map based on search location
@@ -62,7 +86,7 @@ $(document).ready(function() {
          }     
 
         // Create the search box and link it to the UI element.
-        var input = document.getElementById('pac-input');
+        var input = document.getElementById('zipInput');
         var searchBox = new google.maps.places.SearchBox(input);
         // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
