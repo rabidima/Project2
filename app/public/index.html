@@ -6,13 +6,14 @@
 		 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <!-- Favicon -->
-	    <link rel="shortcut icon" type="image/png" href="./assets/media/favicon.ico" />
+	    <link rel="shortcut icon" type="image/png" href="./assets/media/favicon.png" />
 		<!-- Bootstrap Core CSS -->
 	    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
 	    <!-- Jquery -->
 		<link rel="stylesheet" href="./assets/css/jquery-ui.min.css">
 		<script src="assets/js/jquery-ui.min.js"></script>
 	    <script src="assets/js/jquery-3.1.1.min.js"></script>
+
 	 	<!-- Custom CSS -->
 	   	<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 		<!-- Google maps-->
@@ -70,7 +71,7 @@
              <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <h4><i class="fa fa-fw fa-check"></i> Yosemite</h4>
+                        <h4><i class="fa fa-fw fa-check"></i> MAP </h4>
                     </div>
                     <div class="panel-body">
                     	<div id="map"></div>
@@ -88,51 +89,31 @@
 							<b>Enter Zip Code</b>
 							<input placeholder="Zip Code" type="text" id="zipInput">
 						</label>
-							<button id="apiBtn" type="button" class="btn btn-md btn-info">API Trails</button>
+							<!-- <button id="apiBtn" type="button" class="btn btn-md btn-info">API Trails</button> -->
 				  	</div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-compass"></i> Map</h4>
+                    <div class="panel-heading" id="panelHead">
+                        <h4>Trails in 15 miles radius</h4>
                     </div>
-                    <div class="panel-body" id="vid" >
-                        <video autoplay="true" loop="true" muted="true" poster="http://">
+                    <div class="panel-body" id="trailsDiv">
+                        <!-- <video autoplay="true" loop="true" muted="true" poster="http://">
 						<source src = "./assets/media/Promo.mp4" type="video/mp4" />	
-						</video>
+						</video> -->
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.row -->
-
-         	<!-- <form name="searchForm" class="input-group">
-		  			  	<input type="text" id="pac-input" class="form-control"  placeholder="Enter a city or zip code">
-						<button class="btn btn-md btn-info" id="submit" type="button">
-							<span class="glyphicon glyphicon-search">Search</span>
-						</button>
-						</span>
-					</form> -->
-		<!-- <div id="good" class="medium-3 grid-content">
-					<label><b>Trail Difficulty/Topography</b></label>
-					<select name="" id="">
-					<option value="">Moderate</option>
-					<option value="">Intermediate</option>
-					<option value="">Expert</option>
-					<option value="">Flat</option>
-					<option value="">Hilly</option>
-					<option value="">Jagged/Rocky</option>
-				</select> -->
-				
-	
+        <!-- /.row -->	
 		 <hr>
 
         <!-- Call to Action Section -->
         <div class="well">
             <div class="row">
-                <div class="col-md-8">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
+                <div class="col-md-8"  >
+                    
                 </div>
                 <div class="col-md-4">
                     <a class="btn btn-lg btn-default btn-block" href="#">Call to Action</a>

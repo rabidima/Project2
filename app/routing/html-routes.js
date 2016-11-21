@@ -13,6 +13,7 @@ module.exports = function (app) {
 	// HTML GET Requests
 	// Below code handles when users "visit" a page.
 	// ---------------------------------------------------------------------------
+	
 
 	app.get('/details', function (req, res) {
 		res.sendFile(path.join(__dirname + '/../public/details.html'));
@@ -29,4 +30,5 @@ module.exports = function (app) {
 	app.use(function (req, res) {
 		res.sendFile(path.join(__dirname + '/../public/index.html'));
 	});
+
 };

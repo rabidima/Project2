@@ -1,91 +1,108 @@
+
 $(document).ready(function() {
 
-// var zipcode = $('#search').val().trim();
-
-// var queryURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=$' + zipcode + '&sensor=false';
-
-// var mapboxAPI = 'https://api.mapbox.com/directions/v5/mapbox.places/Chester.json?country=us&access_token=pk.eyJ1IjoiZGFtaWVud3JpZ2h0IiwiYSI6ImNpdTdvYjlhazAwMGUzM28wdGd5MnYwbDcifQ.Q0yTEMl-dyTpCvVoi87jNA';
-
-	$('#apiBtn').on('click', function() {
+function getZip() {
+	// $('#apiBtn').on('click', function() {
 		var zipcode = $('#zipInput').val().trim();
 		var queryURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&sensor=false`
 		console.log('Location entered:', zipcode);
 
 		$.ajax({
-			url: queryURL, 
-			method:'GET'
-		}).done(function(response) {
+    			url: queryURL, 
+    			method:'GET'
+      		}).done(function(response) {
 
 			if(zipcode.length < 5) {
-				console.log('Invalid Zip Code')
+			console.log('Invalid Zip Code')
 			} else {
 				for(i=0; i<response.results.length; i++) {
-		      		var lat = response.results["0"].geometry.location.lat;
-      				var long = response.results["0"].geometry.location.lng;		
+		   		var lat = response.results["0"].geometry.location.lat;
+      		var long = response.results["0"].geometry.location.lng;		
 					console.log('Latitude:', lat, 'Longitude:', long);
+          console.log("response" + response.results);
 					getTrails(long, lat);
 				}
 			}	
 		
 		});
 			return false;
-	});
+	};
 
 
-  // $.ajax({
-  //   url: `${currentURL}/api/trailsapi/${long}/${lat}`,
-  //   method: 'GET',
-  // }).done(function(response) {
-
-  // });
 
   function getTrails(long, lat) {
-    // var currentURL = window.location.origin;
-    // $.get(`${currentURL}/api/trailsapi/${long}/${lat}`,function(req,res){
-        console.log('getTrail');
+  
+    // Here we get the location of the root page. 
+    var currentURL = window.location.origin;
+    $('#trailsDiv').empty();
+      $.ajax({
+          url: `${currentURL}/api/trailsapi/${long}/${lat}`,
+          method: 'GET',
+        })
+      .done(function(trailsList) {
+        var trails = JSON.parse(trailsList);
 
-          var trailsURL = 'https://api.transitandtrails.org/api/v1/trailheads';
-          var key = '?key=2e5b17ab10f75e98ad4802a9301e8e7c253d3a4c50736c63e1d91170c7106550';
-          var request = require('request');
+        initMap(trails); 
 
-          var limit = '&limit=5';
+        // Loop through each of the trails 
+        for (var i=0; i<trails.length; i++){
+          // Display only trails with park name
+          if(trails[i].park_name!=null){
 
-           // var lat = req.params.lat;
-           // var long = req.params.long;
+         // Create the HTML Well (Div) and Add the content for each trail
+          var trailsDiv = $("<div>");
+          trailsDiv.addClass('well well-sm');
+          trailsDiv.attr('id', 'tableWell-' + i);
+          $('#trailsDiv').append(trailsDiv);
+
+          var trailNum = i + 1;
           
-           var longitude = "&longitude=" + long;
-           var latitude = "&latitude=" + lat;
-           var distance = "&distance=15";
-
-           //make request to trails api with lat long distance
-           request(trailsURL + key + longitude + latitude + limit + distance, function (error, response, body) {
-              if (!error && response.statusCode == 200) {
-               console.log(body) 
-
-        //     //once request is complete ".then()" send it to the front end
-               res.json(body)
-              }   
-          });    
+        // Then display the remaining fields in the HTML 
+          $("#tableWell-" + i).append("<p><a>" + trails[i].name + "</a></p>");
+          } 
+         }
+          
+        });
   }
 
-	// Display and Update Google Map based on search location
+	// Geolocation: Display and Update Google Map based on search location
 	function initAutocomplete() {
+        // Default position Los Angeles
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 34.0522342, lng: -118.2436849},
-          zoom: 10,
-          mapTypeId: 'terrain'
+          zoom: 10
         });
-            
-         if(navigator.geolocation) {
-         	navigator.geolocation.getCurrentPosition(function(position) {
-         		var pos = {
-         			lat: position.coords.latitude,
-         			lng: position.coords.longitude
-         		}
-         	});
-         }     
+        
+        var infoWindow = new google.maps.InfoWindow({map: map});
 
-        // Create the search box and link it to the UI element.
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+
+              infoWindow.setPosition(pos);
+              infoWindow.setContent('You Are Here');
+              map.setCenter(pos);
+            }, function() {
+                  handleLocationError(true, infoWindow, map.getCenter());
+                });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      };
+
+        // Link Search box to the UI element.
         var input = document.getElementById('zipInput');
         var searchBox = new google.maps.places.SearchBox(input);
         // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -126,7 +143,7 @@ $(document).ready(function() {
               scaledSize: new google.maps.Size(25, 25)
             };
 
-            // Create a marker for each place.
+            // Create a marker 
             markers.push(new google.maps.Marker({
               map: map,
               icon: icon,
@@ -142,7 +159,29 @@ $(document).ready(function() {
             }
           });
           map.fitBounds(bounds);
+          getZip();
         });
       }
 	initAutocomplete();
- });
+
+// Place markers
+  function initMap(trails) {
+    // Create a marker 
+    var markers = [];
+    var map = new google.maps.Map(document.getElementById('map'), {
+        
+      });
+    for (var i=0; i<trails.length; i++){
+      var uluru = {lat: trails[i].latitude, lng: trails[i].longitude};
+      
+      markers.push(new google.maps.Marker({
+        position: uluru,
+        map: map
+      }));
+    } 
+  }
+
+
+
+
+ }); <!-- Document ready end -->

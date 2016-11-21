@@ -5,7 +5,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-
+var fallback = require('express-history-api-fallback');
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -20,6 +20,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.use(express.static(path.join(__dirname + '/app/public')));
+
+// express-history-api-fallback
+// app.use(fallback(path.join(__dirname + '/app/public/index.html')));
 
 
 // ================================================================================
