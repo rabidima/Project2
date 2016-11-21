@@ -2,12 +2,21 @@ html,
 body {
     height: 100%;
 }
-
+header {
+  background-image: url('assets/media/header.jpg');
+  
+}
 body {
     padding-top: 50px; 
 }
-.logo {
-	max-height: 40px;
+.intro-content {
+  align-content: center;
+}
+.logoImg {
+	max-height: 50px;
+}
+.navbar-logo {
+  font-size: 20px;
 }
 #vid {
 	overflow: visible; 
@@ -23,7 +32,6 @@ video{
 .img-hover:hover {
     opacity: 0.8;
 }
-
 
 /* Responsive Styles */
 
